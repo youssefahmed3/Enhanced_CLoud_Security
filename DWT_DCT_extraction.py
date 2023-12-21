@@ -25,7 +25,7 @@ original_LL2_dct = cv2.dct(original_LL2)
 watermarked_image = cv2.imread('watermarked_image.png', cv2.IMREAD_GRAYSCALE)
 
 #apply DWT on the watermarked image
-watermarked_image_coeffs = pywt.dwt2(original_image, 'haar')
+watermarked_image_coeffs = pywt.dwt2(watermarked_image, 'haar')
 watermarked_LL, (watermarked_LH, watermarked_HL, watermarked_HH) = watermarked_image_coeffs
 
 #apply DWT on the LL subband of the watermarked image
@@ -43,7 +43,15 @@ alpha = 0.01 # This should be the same alpha used during the embedding process
 watermark = dct_diff / alpha
 
 watermark = cv2.idct(watermark)
-watermark = pywt.idwt2((watermark, (original_LH2, original_HL2, original_HH2)), 'haar')
-cv2.imshow('Extracted Watermark', watermark)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+watermark_normalized = cv2.normalize(watermark, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U)
+
+cv2.imwrite('watermark_extraction.png', watermark)
+""" 
+# Subtract the original image from the watermarked image
+difference_image = cv2.absdiff(original_image, watermarked_image)
+
+# Normalize the difference image for viewing
+difference_image_normalized = cv2.normalize(difference_image, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U)
+
+# Save and view the difference image
+cv2.imwrite('difference_image.png', difference_image_normalized) """
