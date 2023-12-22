@@ -1,60 +1,14 @@
 import cv2 # for reading and writing images
 import numpy as np # for mathematical operations
 import pywt # for discrete wavelet transform
-
-def calculate_psnr(original_image, reconstructed_image):
-    # Ensure the images are the same size
-    assert original_image.shape == reconstructed_image.shape
-
-    # Calculate the Mean Squared Error (MSE)
-    mse = np.mean((original_image - reconstructed_image) ** 2)
-
-    # If the MSE is zero, the images are identical, and the PSNR is infinity
-    if mse == 0:
-        return float('inf')
-
-    # Otherwise, calculate the PSNR
-    max_pixel = 255.0
-    psnr = 20 * np.log10(max_pixel / np.sqrt(mse))
-
-    return psnr
-
-def calculate_nc(image, template):
-    # Ensure the images are the same size
-    assert image.shape == template.shape
-
-    # Calculate the mean of the images
-    image_mean = np.mean(image)
-    template_mean = np.mean(template)
-
-    # Subtract the mean from the images
-    image_zero_mean = image - image_mean
-    template_zero_mean = template - template_mean
-
-    # Calculate the numerator (the sum of the product of the zero-mean images)
-    numerator = np.sum(image_zero_mean * template_zero_mean)
-
-    # Calculate the denominator (the square root of the sum of the squares of the zero-mean images)
-    denominator = np.sqrt(np.sum(image_zero_mean**2) * np.sum(template_zero_mean**2))
-
-    # Calculate the normalized correlation
-    nc = numerator / denominator
-
-    return nc
+from Evaluation_parameters import calculate_nc, calculate_psnr
 
 
 # Load the original and watermarked images
 original_image = cv2.imread('lena.png', cv2.IMREAD_GRAYSCALE)
 watermarked_image = cv2.imread('watermarked_image.png', cv2.IMREAD_GRAYSCALE)
-""" 
-1- Apply DWT on The Image
-2- Apply DWT on the decomposed image subband LL to get LL2
-3- Apply DCT on the decomposed image subband LL2
-4- Apply IDCT on the decomposed image subband LL2
-5- Apply IDWT on The LL2 to get LL and then apply IDWT on LL to get the watermarked image
-6- Calculate the PSNR
-7- Calculate the NC 
-"""
+
+
 
 #load the original image
 original_image = cv2.imread('lena.png')

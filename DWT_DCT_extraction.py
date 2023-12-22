@@ -1,7 +1,10 @@
 import cv2 # for reading and writing images
 import numpy as np # for mathematical operations
 import pywt # for discrete wavelet transform
+from Evaluation_parameters import calculate_nc
 
+#load the original watermark 
+original_watermark = cv2.imread('watermark.jpg', cv2.IMREAD_GRAYSCALE)
 
 #load the original image
 original_image = cv2.imread('lena.png', cv2.IMREAD_GRAYSCALE)
@@ -55,3 +58,5 @@ difference_image_normalized = cv2.normalize(difference_image, None, 0, 255, cv2.
 
 # Save and view the difference image
 cv2.imwrite('difference_image.png', difference_image_normalized) """
+
+print("NC: ", calculate_nc(original_watermark, watermark))
