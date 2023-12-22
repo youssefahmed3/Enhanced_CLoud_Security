@@ -1,6 +1,7 @@
 import DWT_DCT
 import cv2 # for reading and writing images
 from Evaluation_parameters import calculate_nc,calculate_psnr
+import matplotlib.pyplot as plt
 
 original_image = cv2.imread('lena.png', cv2.IMREAD_GRAYSCALE)
 watermark_image = cv2.imread('watermark.jpg', cv2.IMREAD_GRAYSCALE)
@@ -30,5 +31,35 @@ print("NC between original watermark and extracted watermark: ", calculate_nc(wa
 
 
 
+# Calculate the NC and PSNR values
+nc_ow_wi = calculate_nc(original_image, watermarked_image)
+psnr_ow_wi = calculate_psnr(original_image, watermarked_image)
+nc_wm_ew = calculate_nc(watermark_image, extracted_watermark)
+# Plot the original and watermarked images
+plt.figure(figsize=(10, 10))
+
+plt.subplot(2, 2, 1)
+plt.imshow(original_image, cmap='gray')
+plt.title('Base Image')
+
+plt.subplot(2, 2, 2)
+plt.imshow(watermark_image, cmap='gray')
+plt.title('Watermark')
+
+plt.subplot(2, 2, 3)
+plt.imshow(watermarked_image, cmap='gray')
+plt.title('Watermarked Image')
+
+
+plt.subplot(2, 2, 4)
+plt.imshow(extracted_watermark, cmap='gray')
+plt.title('extracted watermark')
+
+# Add the labels to the bottom of the figure
+plt.figtext(0.5, 0.01, f"NC between original image and watermarked image: {nc_ow_wi}", ha="center", fontsize=12, bbox={"facecolor":"orange", "alpha":0.5, "pad":5})
+plt.figtext(0.5, 0.06, f"PSNR between original image and watermarked image: {psnr_ow_wi}", ha="center", fontsize=12, bbox={"facecolor":"orange", "alpha":0.5, "pad":5})
+plt.figtext(0.5, 0.11, f"NC between original watermark and extracted watermark: {nc_wm_ew}", ha="center", fontsize=12, bbox={"facecolor":"orange", "alpha":0.5, "pad":5})
+
+plt.show()
 
 
